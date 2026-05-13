@@ -67,9 +67,7 @@ class Settings(BaseSettings):
     pipeline_retry_wait_max: float = Field(
         default=60.0, description="Espera máxima entre reintentos (segundos)"
     )
-    pipeline_rate_limit_calls: int = Field(
-        default=10, description="Máximo de llamadas por período"
-    )
+    pipeline_rate_limit_calls: int = Field(default=10, description="Máximo de llamadas por período")
     pipeline_rate_limit_period: float = Field(
         default=1.0, description="Período del rate limit (segundos)"
     )

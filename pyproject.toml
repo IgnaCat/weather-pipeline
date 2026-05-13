@@ -65,7 +65,11 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "UP", "ANN", "B", "SIM"]
-ignore = ["ANN101", "ANN102"]
+ignore = [
+    "ANN101",   # missing-type-self: no requiere tipado en `self`
+    "ANN102",   # missing-type-cls: no requiere tipado en `cls`
+    "ANN401",   # any-type: **kwargs: Any es el patrón estándar en Python para kwargs flexibles
+]
 
 [tool.mypy]
 python_version = "3.11"
