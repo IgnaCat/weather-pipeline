@@ -1,0 +1,83 @@
+[project]
+name = "weather-pipeline"
+version = "0.1.0"
+description = "Pipeline de ingestión y procesamiento de datos meteorológicos en tiempo real"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Ignacio" }]
+
+dependencies = [
+    # Procesamiento de datos
+    "polars>=0.20.0",
+    "numpy>=1.26.0",
+    "pyarrow>=14.0.0",      # Backend Parquet para Polars
+
+    # Almacenamiento local
+    "duckdb>=0.9.0",
+
+    # Ingesta NOAA NEXRAD (S3 público)
+    "boto3>=1.34.0",
+    "botocore>=1.34.0",
+
+    # HTTP para APIs secundarias (Open-Meteo)
+    "httpx>=0.27.0",
+
+    # Retry y rate limiting
+    "tenacity>=8.2.0",
+
+    # Configuración
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    "python-dotenv>=1.0.0",
+
+    # Logging estructurado
+    "loguru>=0.7.0",
+
+    # Parsing de fechas
+    "python-dateutil>=2.9.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.23.0",
+    "ruff>=0.3.0",
+    "mypy>=1.8.0",
+    "pre-commit>=3.6.0",
+    "boto3-stubs[s3]>=1.34.0",
+]
+
+[project.scripts]
+weather-pipeline = "weather_pipeline.pipeline:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/weather_pipeline"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "ANN", "B", "SIM"]
+ignore = ["ANN101", "ANN102"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=weather_pipeline --cov-report=term-missing --cov-fail-under=80"
+asyncio_mode = "auto"
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["*/tests/*"]

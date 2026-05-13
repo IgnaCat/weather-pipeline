@@ -1,0 +1,65 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# uv
+.uv/
+uv.lock
+
+# Variables de entorno (NUNCA commitear credenciales)
+.env
+.env.local
+.env.*.local
+
+# Datos (no subir datos crudos al repo)
+data/raw/
+data/processed/
+data/analytics/
+*.parquet
+*.nc
+*.hdf5
+*.h5
+
+# DuckDB
+*.duckdb
+*.duckdb.wal
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# Mypy
+.mypy_cache/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Airflow
+airflow.db
+airflow.cfg
+standalone_admin_password.txt
