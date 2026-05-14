@@ -77,6 +77,13 @@ strict = true
 warn_return_any = true
 warn_unused_configs = true
 
+[[tool.mypy.overrides]]
+# Los archivos de tests usan decoradores de pytest (@pytest.fixture, @pytest.mark.*)
+# que mypy strict no puede tipar. Relajamos solo esa regla para tests/,
+# manteniendo el resto de strict activo (tipos, retornos, etc.)
+module = "tests.*"
+disallow_untyped_decorators = false
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--cov=weather_pipeline --cov-report=term-missing --cov-fail-under=80"
