@@ -34,11 +34,14 @@ run:  ## Correr el pipeline completo para una fecha (make run DATE=2024-01-15)
 ingest:  ## Solo ingesta de datos
 	uv run python -m weather_pipeline.pipeline --date $(DATE) --station $(STATION) --step ingest
 
-process:  ## Solo procesamiento de datos
-	uv run python -m weather_pipeline.pipeline --date $(DATE) --station $(STATION) --step process
+silver:  ## Solo etapa Silver (make silver DATE=2024-01-15)
+	uv run python -m weather_pipeline.pipeline --date $(DATE) --station $(STATION) --step silver
+
+gold:  ## Solo etapa Gold (make gold DATE=2024-01-15)
+	uv run python -m weather_pipeline.pipeline --date $(DATE) --station $(STATION) --step gold
 
 backfill:  ## Cargar datos históricos (make backfill DATE_FROM=2024-01-01 DATE_TO=2024-01-31)
-	uv run python -m weather_pipeline.pipeline --date-from $(DATE_FROM) --date-to $(DATE_TO) --station $(STATION) --backfill
+	uv run python -m weather_pipeline.pipeline --backfill $(DATE_FROM) $(DATE_TO) --station $(STATION)
 
 catalog:  ## Mostrar el catálogo de datasets en DuckDB
 	uv run python -c "from weather_pipeline.storage.local import LocalStorage; LocalStorage().show_catalog()"

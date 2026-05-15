@@ -70,25 +70,54 @@ uv run pre-commit install
 ### Correr el pipeline
 
 ```bash
-# Descargar y procesar datos de hoy
+# Pipeline completo para hoy (ingest + silver + gold)
 make run
 
-# Correr para una fecha específica
+# Fecha específica
 make run DATE=2024-01-15
 
-# Solo ingesta
-make ingest
+# Cambiar estación (default: KBUF)
+make run DATE=2024-01-15 STATION=KDTX
 
-# Solo procesamiento
-make process
+# Dry-run: ver qué haría sin ejecutar nada
+uv run python -m weather_pipeline.pipeline --date 2024-01-15 --dry-run
+```
+
+#### Ejecutar etapas por separado
+
+```bash
+# Solo descargar archivos de S3
+make ingest DATE=2024-01-15
+
+# Solo transformar raw → Silver (ya tenés los archivos descargados)
+make silver DATE=2024-01-15
+
+# Solo agregar Silver → Gold
+make gold DATE=2024-01-15
+```
+
+#### Backfill — cargar datos históricos
+
+```bash
+# Procesar un rango de fechas completo
+make backfill DATE_FROM=2024-01-01 DATE_TO=2024-01-31
+```
+
+#### Explorar el catálogo DuckDB
+
+```bash
+# Ver todos los datasets guardados
+make catalog
 ```
 
 ### Tests
 
 ```bash
-make test          # Todos los tests con cobertura
-make test-unit     # Solo tests unitarios (rápidos)
-make lint          # Linting con ruff + mypy
+make test               # Todos los tests con cobertura
+make test-unit          # Solo tests unitarios (rápidos, sin red)
+make test-integration   # Solo tests de integración (requiere internet)
+make lint               # Linting con ruff + mypy
+make format             # Formatear código automáticamente
 ```
 
 ---
